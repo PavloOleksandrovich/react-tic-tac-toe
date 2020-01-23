@@ -8,7 +8,8 @@ const colls = 3;
 const initState = {
   rows,
   colls,
-  squares: new Array(rows).fill(new Array(colls).fill(null))
+  squares: new Array(rows).fill(new Array(colls).fill(null)),
+  xIsNext: false
 };
 
 export default class Game extends Component {
@@ -16,6 +17,21 @@ export default class Game extends Component {
     super(props);
 
     this.state = Object.assign({}, initState);
+  }
+
+  handleClick(row, col) {
+    const { xIsNext } = this.state;
+
+    const squares = JSON.parse(JSON.stringify(this.state.squares));
+
+    squares[row][col] =  xIsNext ? 'X' : 'O';
+
+    const state = Object.assign(this.state, {
+      squares,
+      xIsNext: !xIsNext
+    });
+
+    this.setState(state);
   }
 
   render() {
@@ -27,6 +43,7 @@ export default class Game extends Component {
           rows={rows}
           colls={colls}
           squares={squares}
+          onClick={(row, col) => this.handleClick(row, col)}
         />
       </div>
     );

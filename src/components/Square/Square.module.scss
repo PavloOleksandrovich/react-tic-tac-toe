@@ -21,3 +21,16 @@
         transform: translate(-50%, -50%);
     }
 }
+
+svg {
+    circle {
+        stroke: #E43A20; 
+        stroke-width: 12; 
+        fill-opacity: 0;
+    }
+
+    line {
+        stroke: #00AAC4;
+        stroke-width: 12;
+    }
+}

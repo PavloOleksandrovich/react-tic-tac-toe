@@ -6,17 +6,21 @@ export default class Board extends Component {
     createBoard(rows, colls) {
         const board = [];
 
-        for (let i = 0;i < rows;i++) {
+        for (let row = 0;row < rows;row++) {
             const column = [];
 
-            for (let j = 0;j < colls;j++) {
+            for (let col = 0;col < colls;col++) {
                 column.push((
-                    <Square key={`${i}${j}`} value={this.props.squares[i][j]} />
+                    <Square 
+                        key={`${row}${col}`} 
+                        value={this.props.squares[row][col]} 
+                        onClick={() => this.props.onClick(row, col)}
+                    />
                 ));
             }
 
             board.push((
-                <div key={i} className={style.boardColumn}>
+                <div key={row} className={style.boardColumn}>
                     {column}
                 </div>
             ));
