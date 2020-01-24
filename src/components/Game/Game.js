@@ -11,6 +11,7 @@ const initState = {
   colls,
   squares: new Array(rows).fill(new Array(colls).fill(null)),
   xIsNext: false,
+  title: 'Tic Tac Toe',
   gameOver: false
 };
 
@@ -40,8 +41,8 @@ export default class Game extends Component {
     const winner = calculateWinner(squares);
 
     if (winner) {
-      // TODO: replace alert with dialog message who win
-      alert(winner.xIsWin ? 'X' : 'O');
+      // TODO: invite modal here
+      state.title = winner.xIsWin ? 'X Wins' : 'O Wins';
       state.gameOver = true;
     }
 
@@ -49,10 +50,15 @@ export default class Game extends Component {
   }
 
   render() {
-    const { squares } = this.state;
+    const { squares, title } = this.state;
 
     return (
       <div className={style.wrapper}>
+        {/* TODO: animation */}
+        <div className={style.titleText}>
+          {title}          
+        </div>
+
         <Board 
           rows={rows}
           colls={colls}
