@@ -12,3 +12,20 @@
         margin-bottom: 20px;
     }
 }
+
+.modalBody {
+    display: flex;
+    justify-content: center;
+
+    h1 {
+        font-size: 22px;
+        font-family: 'Roboto', sans-serif;
+        color: #eee;
+        margin-bottom: 10px;
+    }
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: center;
+}

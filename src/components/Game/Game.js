@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Board from '../Board/Board';
+import Modal from '../Modal/Modal';
 import style from './Game.module.scss';
 import { calculateWinner } from '../../utils/game';
 
@@ -12,7 +13,8 @@ const initState = {
   squares: new Array(rows).fill(new Array(colls).fill(null)),
   xIsNext: false,
   title: 'Tic Tac Toe',
-  gameOver: false
+  gameOver: false,
+  isModalOpen: false
 };
 
 export default class Game extends Component {
@@ -41,10 +43,18 @@ export default class Game extends Component {
     const winner = calculateWinner(squares);
 
     if (winner) {
-      // TODO: invite modal here
+      state.isModalOpen = true;
       state.title = winner.xIsWin ? 'X Wins' : 'O Wins';
       state.gameOver = true;
     }
+
+    this.setState(state);
+  }
+
+  handleModal() {
+    const state = Object.assign({}, this.state);
+
+    state.isModalOpen = !state.isModalOpen;
 
     this.setState(state);
   }
@@ -65,6 +75,21 @@ export default class Game extends Component {
           squares={squares}
           onClick={(row, col) => this.handleClick(row, col)}
         />
+
+        {this.state.isModalOpen && 
+          <Modal onClose={() => this.handleModal()}>
+            <main className={style.modalBody}>
+              <h1>
+                {title}
+              </h1>
+            </main>
+
+            <footer className={style.modalFooter}>
+              {/* TODO: on click restart */}
+              <button className="btn btn-blue">Restart</button>
+            </footer>
+          </Modal>
+        }
       </div>
     );
   }
