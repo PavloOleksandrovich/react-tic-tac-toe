@@ -11,7 +11,10 @@ const colls = 3;
 const initState = {
   rows,
   colls,
-  squares: new Array(rows).fill(new Array(colls).fill(null)),
+  history: [
+    new Array(rows).fill(new Array(colls).fill(null))
+  ],
+  currentStepNumber: 0,
   xIsNext: false,
   title: 'Tic Tac Toe',
   gameOver: false,
@@ -25,17 +28,26 @@ export default class Game extends Component {
     this.state = JSON.parse(JSON.stringify(initState));
   }
 
+  // TODO: menu title TIC TAC TOE - game title who move now
   handleSquareClick(row, col) {
     const state = JSON.parse(JSON.stringify(this.state));
 
-    if (state.squares[row][col] || state.gameOver) {
+    const history = JSON.parse(JSON.stringify(state.history.slice(0, state.currentStepNumber + 1)));
+    
+    const current = JSON.parse(JSON.stringify(history[history.length - 1]));
+
+    if (current[row][col] || state.gameOver) {
       return;
     }
 
-    state.squares[row][col] = state.xIsNext ? 'X' : 'O';
-    state.xIsNext = !state.xIsNext;
+    current[row][col] = state.xIsNext ? 'X' : 'O';
+    state.history = history.concat([current]);
+    state.currentStepNumber++;
 
-    const winner = calculateWinner(state.squares);
+    state.xIsNext = !state.xIsNext;
+    state.title = state.xIsNext ? 'X move' : 'O move';
+
+    const winner = calculateWinner(current);
     if (winner) {
       state.isModalOpen = true;
       state.title = winner.xIsWin ? 'X Wins' : 'O Wins';
@@ -46,15 +58,27 @@ export default class Game extends Component {
   }
 
   handleShowModal() {
-    const state = Object.assign({}, this.state);
+    const state = JSON.parse(JSON.stringify(this.state));
 
     state.isModalOpen = !state.isModalOpen;
 
     this.setState(state);
   }
 
+  jumpTo(move) {
+    const state = JSON.parse(JSON.stringify(this.state));
+
+    state.currentStepNumber = move;
+    state.xIsNext = (move % 2) === 0; 
+    state.title = state.xIsNext ? 'X move' : 'O move';
+
+    this.setState(state);
+  }
+
   render() {
-    const { squares, title } = this.state;
+    const { history, title, currentStepNumber } = this.state;
+
+    const squares = history[currentStepNumber];
 
     return (
       <div className={style.wrapper}>
@@ -71,7 +95,7 @@ export default class Game extends Component {
             onClick={(row, col) => this.handleSquareClick(row, col)}
           />
 
-          <History />
+          <History history={history} onClick={(move) => this.jumpTo(move)} />
         </main>
 
         {/* TODO: restart button */}
