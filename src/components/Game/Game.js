@@ -39,7 +39,7 @@ export default class Game extends Component {
     const current = JSON.parse(JSON.stringify(history[history.length - 1]));
 
     if (current.squares[row][col] || state.gameOver) {
-      return;
+      return true;
     }
 
     current.squares[row][col] = state.xIsNext ? 'X' : 'O';

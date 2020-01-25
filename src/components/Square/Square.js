@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import style from './Square.module.scss';
 
 export default class Square extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            shaked: false
+        };
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
     renderSquare() {
         switch(this.props.value) {
             case 'O':
@@ -22,9 +32,19 @@ export default class Square extends Component {
         }
     }
 
+    handleClick() {
+        const shaked = this.props.onClick() ? true : false;
+
+        this.setState({shaked});
+    }
+
     render() {
+        const { shaked } = this.state;
+
+        const htmlClass = shaked ? `${style.boardCell} ${style.shaked}` : style.boardCell;
+
         return (
-            <div className={style.boardCell} onClick={this.props.onClick}>
+            <div className={htmlClass} onClick={this.handleClick} onAnimationEnd={() => this.setState({shaked: false})}>
                 {this.renderSquare()}
             </div>
         );
