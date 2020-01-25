@@ -22,27 +22,20 @@ export default class Game extends Component {
   constructor(props) {
     super(props);
 
-    this.state = Object.assign({}, initState);
+    this.state = JSON.parse(JSON.stringify(initState));
   }
 
-  handleClick(row, col) {
-    const { xIsNext, gameOver } = this.state;
+  handleSquareClick(row, col) {
+    const state = JSON.parse(JSON.stringify(this.state));
 
-    const squares = JSON.parse(JSON.stringify(this.state.squares));
-
-    if (squares[row][col] || gameOver) {
+    if (state.squares[row][col] || state.gameOver) {
       return;
     }
 
-    squares[row][col] =  xIsNext ? 'X' : 'O';
+    state.squares[row][col] = state.xIsNext ? 'X' : 'O';
+    state.xIsNext = !state.xIsNext;
 
-    const state = Object.assign(this.state, {
-      squares,
-      xIsNext: !xIsNext
-    });
-
-    const winner = calculateWinner(squares);
-
+    const winner = calculateWinner(state.squares);
     if (winner) {
       state.isModalOpen = true;
       state.title = winner.xIsWin ? 'X Wins' : 'O Wins';
@@ -52,7 +45,7 @@ export default class Game extends Component {
     this.setState(state);
   }
 
-  handleModal() {
+  handleShowModal() {
     const state = Object.assign({}, this.state);
 
     state.isModalOpen = !state.isModalOpen;
@@ -75,14 +68,16 @@ export default class Game extends Component {
             rows={rows}
             colls={colls}
             squares={squares}
-            onClick={(row, col) => this.handleClick(row, col)}
+            onClick={(row, col) => this.handleSquareClick(row, col)}
           />
 
           <History />
         </main>
 
+        {/* TODO: restart button */}
+
         {this.state.isModalOpen && 
-          <Modal onClose={() => this.handleModal()}>
+          <Modal onClose={() => this.handleShowModal()}>
             <main className={style.modalBody}>
               <h1>
                 {title}
