@@ -12,12 +12,14 @@ const initState = {
   rows,
   colls,
   history: [
-    new Array(rows).fill(new Array(colls).fill(null))
+    {
+      squares: new Array(rows).fill(new Array(colls).fill(null)),
+      gameOver: false
+    }
   ],
   currentMove: 0,
   xIsNext: false,
   title: 'Tic Tac Toe',
-  gameOver: false,
   isModalOpen: false
 };
 
@@ -36,23 +38,24 @@ export default class Game extends Component {
     
     const current = JSON.parse(JSON.stringify(history[history.length - 1]));
 
-    if (current[row][col] || state.gameOver) {
+    if (current.squares[row][col] || state.gameOver) {
       return;
     }
 
-    current[row][col] = state.xIsNext ? 'X' : 'O';
+    current.squares[row][col] = state.xIsNext ? 'X' : 'O';
+
+    const winner = calculateWinner(current.squares);
+    if (winner) {
+      state.isModalOpen = true;
+      state.title = winner.xIsWin ? 'X Wins' : 'O Wins';
+      current.gameOver = true;
+    }
+
     state.history = history.concat([current]);
     state.currentMove++;
 
     state.xIsNext = !state.xIsNext;
     state.title = state.xIsNext ? 'X move' : 'O move';
-
-    const winner = calculateWinner(current);
-    if (winner) {
-      state.isModalOpen = true;
-      state.title = winner.xIsWin ? 'X Wins' : 'O Wins';
-      state.gameOver = true;
-    }
 
     this.setState(state);
   }
@@ -78,7 +81,7 @@ export default class Game extends Component {
   render() {
     const { history, title, currentMove } = this.state;
 
-    const squares = history[currentMove];
+    const { squares } = history[currentMove];
 
     return (
       <div className={style.wrapper}>
