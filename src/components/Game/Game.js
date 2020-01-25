@@ -30,7 +30,6 @@ export default class Game extends Component {
     this.state = JSON.parse(JSON.stringify(initState));
   }
 
-  // TODO: menu title TIC TAC TOE - game title who move now
   handleSquareClick(row, col) {
     const state = JSON.parse(JSON.stringify(this.state));
 
@@ -44,6 +43,9 @@ export default class Game extends Component {
 
     current.squares[row][col] = state.xIsNext ? 'X' : 'O';
 
+    state.xIsNext = !state.xIsNext;
+    state.title = state.xIsNext ? 'X move' : 'O move';
+
     const winner = calculateWinner(current.squares);
     if (winner) {
       state.isModalOpen = true;
@@ -53,9 +55,6 @@ export default class Game extends Component {
 
     state.history = history.concat([current]);
     state.currentMove++;
-
-    state.xIsNext = !state.xIsNext;
-    state.title = state.xIsNext ? 'X move' : 'O move';
 
     this.setState(state);
   }
@@ -85,7 +84,6 @@ export default class Game extends Component {
 
     return (
       <div className={style.wrapper}>
-        {/* TODO: animation */}
         <div className={style.titleText}>
           {title}          
         </div>
@@ -101,7 +99,6 @@ export default class Game extends Component {
           <History currentMove={currentMove} history={history} onClick={(move) => this.jumpTo(move)} />
         </main>
 
-        {/* TODO: animation */}
         <div className={`material-icons ${style.refresh}`} onClick={() => this.setState(initState)}>refresh</div> 
 
         {this.state.isModalOpen && 
@@ -111,7 +108,6 @@ export default class Game extends Component {
             </main>
 
             <footer className={style.modalFooter}>
-              {/* TODO: animation */}
               <button className="btn btn-blue" onClick={() => this.setState(initState)}>Restart</button>
             </footer>
           </Modal>
