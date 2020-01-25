@@ -104,9 +104,7 @@ export default class Game extends Component {
         {this.state.isModalOpen && 
           <Modal onClose={() => this.handleShowModal()}>
             <main className={style.modalBody}>
-              <h1>
-                {title}
-              </h1>
+              <h1>{title}</h1>
             </main>
 
             <footer className={style.modalFooter}>
