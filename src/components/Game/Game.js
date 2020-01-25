@@ -71,7 +71,7 @@ export default class Game extends Component {
     const state = JSON.parse(JSON.stringify(this.state));
 
     state.currentMove = move;
-    state.xIsNext = (move % 2) === 0; 
+    state.xIsNext = initState.xIsNext ? (move % 2) === 0 : (move % 2) !== 0;
     state.title = state.xIsNext ? 'X move' : 'O move';
 
     this.setState(state);
