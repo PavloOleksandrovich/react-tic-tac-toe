@@ -30,6 +30,7 @@
             color: #000;
         }
 
+        &.active::before,
         &:hover::before {
             background-color: #2ecc71;
         }

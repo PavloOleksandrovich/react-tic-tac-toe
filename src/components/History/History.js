@@ -8,8 +8,10 @@ export default class History extends Component {
                 ? `Go to Move #${index}`
                 : 'Go to game start';
             
+            const htmlClass = index === this.props.currentMove ? style.active : '';
+
             return (
-                <li key={index} onClick={() => this.props.onClick(index)}>
+                <li className={htmlClass} key={index} onClick={() => this.props.onClick(index)}>
                     {text}
                 </li>
             );

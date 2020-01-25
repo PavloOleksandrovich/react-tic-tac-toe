@@ -14,7 +14,7 @@ const initState = {
   history: [
     new Array(rows).fill(new Array(colls).fill(null))
   ],
-  currentStepNumber: 0,
+  currentMove: 0,
   xIsNext: false,
   title: 'Tic Tac Toe',
   gameOver: false,
@@ -32,7 +32,7 @@ export default class Game extends Component {
   handleSquareClick(row, col) {
     const state = JSON.parse(JSON.stringify(this.state));
 
-    const history = JSON.parse(JSON.stringify(state.history.slice(0, state.currentStepNumber + 1)));
+    const history = JSON.parse(JSON.stringify(state.history.slice(0, state.currentMove + 1)));
     
     const current = JSON.parse(JSON.stringify(history[history.length - 1]));
 
@@ -42,7 +42,7 @@ export default class Game extends Component {
 
     current[row][col] = state.xIsNext ? 'X' : 'O';
     state.history = history.concat([current]);
-    state.currentStepNumber++;
+    state.currentMove++;
 
     state.xIsNext = !state.xIsNext;
     state.title = state.xIsNext ? 'X move' : 'O move';
@@ -68,7 +68,7 @@ export default class Game extends Component {
   jumpTo(move) {
     const state = JSON.parse(JSON.stringify(this.state));
 
-    state.currentStepNumber = move;
+    state.currentMove = move;
     state.xIsNext = (move % 2) === 0; 
     state.title = state.xIsNext ? 'X move' : 'O move';
 
@@ -76,9 +76,9 @@ export default class Game extends Component {
   }
 
   render() {
-    const { history, title, currentStepNumber } = this.state;
+    const { history, title, currentMove } = this.state;
 
-    const squares = history[currentStepNumber];
+    const squares = history[currentMove];
 
     return (
       <div className={style.wrapper}>
@@ -95,7 +95,7 @@ export default class Game extends Component {
             onClick={(row, col) => this.handleSquareClick(row, col)}
           />
 
-          <History history={history} onClick={(move) => this.jumpTo(move)} />
+          <History currentMove={currentMove} history={history} onClick={(move) => this.jumpTo(move)} />
         </main>
 
         {/* TODO: animation */}
