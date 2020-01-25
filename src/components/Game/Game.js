@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from '../Board/Board';
 import Modal from '../Modal/Modal';
+import History from '../History/History';
 import style from './Game.module.scss';
 import { calculateWinner } from '../../utils/game';
 
@@ -69,12 +70,16 @@ export default class Game extends Component {
           {title}          
         </div>
 
-        <Board 
-          rows={rows}
-          colls={colls}
-          squares={squares}
-          onClick={(row, col) => this.handleClick(row, col)}
-        />
+        <main>
+          <Board 
+            rows={rows}
+            colls={colls}
+            squares={squares}
+            onClick={(row, col) => this.handleClick(row, col)}
+          />
+
+          <History />
+        </main>
 
         {this.state.isModalOpen && 
           <Modal onClose={() => this.handleModal()}>
