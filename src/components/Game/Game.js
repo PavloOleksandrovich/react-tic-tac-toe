@@ -98,7 +98,8 @@ export default class Game extends Component {
           <History history={history} onClick={(move) => this.jumpTo(move)} />
         </main>
 
-        {/* TODO: restart button */}
+        {/* TODO: animation */}
+        <div className={`material-icons ${style.refresh}`} onClick={() => this.setState(initState)}>refresh</div> 
 
         {this.state.isModalOpen && 
           <Modal onClose={() => this.handleShowModal()}>
@@ -109,8 +110,8 @@ export default class Game extends Component {
             </main>
 
             <footer className={style.modalFooter}>
-              {/* TODO: on click restart */}
-              <button className="btn btn-blue">Restart</button>
+              {/* TODO: animation */}
+              <button className="btn btn-blue" onClick={() => this.setState(initState)}>Restart</button>
             </footer>
           </Modal>
         }
